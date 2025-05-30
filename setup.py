@@ -14,7 +14,12 @@ dummy_ext = Extension(f"{PACKAGE_NAME}._dummy", sources=[])
 class ZigBuildExt(_build_ext):
     def run(self):
         # 1) run your Zig build
-        subprocess.run(["zig", "build"], check=True)
+        zig = shutil.which("zig")
+        if zig is None:
+            raise EnvironmentError(
+                "Zig compiler not found. Please install Zig and ensure it is in your PATH."
+            )
+        subprocess.run([zig, "build"], check=True)
         # 2) copy the resulting shared libs into build_lib/ldpc_jossy/
         if not os.path.exists(ZIG_BUILD_DIR):
             raise FileNotFoundError(f"{ZIG_BUILD_DIR} not found")
