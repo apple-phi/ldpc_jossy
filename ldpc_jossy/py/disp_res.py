@@ -160,3 +160,8 @@ if save2file == True:
     multipage(filename)
 else:
     plt.show()
+
+
+def noop():
+    """A no-op function to give console_scripts a target."""
+    pass

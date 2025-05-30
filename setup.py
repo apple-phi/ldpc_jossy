@@ -62,7 +62,7 @@ setup(
             "ldpc-test = ldpc_jossy.py.test_ldpc:main",
             "ldpc-awgn = ldpc_jossy.py.ldpc_awgn:main",
             "ldpc-results2csv = ldpc_jossy.py.results2csv:main",
-            "ldpc-dispres = ldpc_jossy.py.disp_res",
+            "ldpc-dispres = ldpc_jossy.py.disp_res:noop",
         ],
     },
 )
