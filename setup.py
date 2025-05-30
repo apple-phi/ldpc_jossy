@@ -15,7 +15,7 @@ class ZigBuildExt(_build_ext):
     def run(self):
         # 1) run your Zig build
         subprocess.run(["zig", "build"], check=True)
-        # 2) copy the resulting shared libs into build_lib/gf3/
+        # 2) copy the resulting shared libs into build_lib/ldpc_jossy/
         if not os.path.exists(ZIG_BUILD_DIR):
             raise FileNotFoundError(f"{ZIG_BUILD_DIR} not found")
         target_pkg_dir = os.path.join(self.build_lib, PACKAGE_NAME)

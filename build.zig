@@ -13,7 +13,7 @@ pub fn build(b: *std.Build) void {
     });
     // wrap your .c file in a Module.CSourceFile literal:
     cLdpc.addCSourceFile(.{
-        .file = b.path("gf3/src/c_ldpc.c"),
+        .file = b.path("./ldpc_jossy/src/c_ldpc.c"),
         .flags = &[_][]const u8{}, // no extra flags here
     }); // :contentReference[oaicite:0]{index=0}
     cLdpc.linkSystemLibrary("m");
@@ -27,7 +27,7 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
     results2csv.addCSourceFile(.{
-        .file = b.path("gf3/src/results2csv.c"),
+        .file = b.path("./ldpc_jossy/src/results2csv.c"),
         .flags = &[_][]const u8{},
     }); // :contentReference[oaicite:1]{index=1}
     results2csv.linkLibC();
