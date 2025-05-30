@@ -6,6 +6,12 @@ import pathlib
 
 ROOT_DIR = pathlib.Path(__file__).parent.parent
 
-ext = "so" if os.name != "nt" else "dll"
+p = ROOT_DIR / "bin" / "c_ldpc"
 
-c_ldpc = ctypes.CDLL(str(ROOT_DIR / "bin" / f"c_ldpc.{ext}"))
+try_exts = ["", ".so", ".dll", ".dylib"]
+for ext in try_exts:
+    if os.path.exists(p.with_suffix(ext)):
+        p = p.with_suffix(ext)
+        break
+
+c_ldpc = ctypes.CDLL(str(p))

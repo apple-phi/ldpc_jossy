@@ -2,7 +2,7 @@ import pathlib
 import numpy as np
 import sys
 
-import ldpc
+from . import ldpc
 
 ROOT_DIR = pathlib.Path(__file__).parent.parent
 

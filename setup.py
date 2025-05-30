@@ -55,13 +55,13 @@ setup(
         "develop": ZigDevelop,
     },
     include_package_data=True,
-    package_data={PACKAGE_NAME: ["*.so", "*.dll", "*.dylib", "bin/*"]},
+    package_data={PACKAGE_NAME: ["*.so", "*.dll", "*.dylib", "bin/*", "data/*"]},
     python_requires=">=3.7",
     entry_points={
         "console_scripts": [
             "ldpc-test = ldpc_jossy.py.test_ldpc:main",
             "ldpc-awgn = ldpc_jossy.py.ldpc_awgn:main",
-            "results2csv = ldpc_jossy.bin.results2csv:main",
+            "results2csv = ldpc_jossy.py.results2csv:main",
             "ldpc-dispres = ldpc_jossy.py.disp_res:main",
         ],
     },
