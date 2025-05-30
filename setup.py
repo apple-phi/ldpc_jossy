@@ -61,8 +61,8 @@ setup(
         "console_scripts": [
             "ldpc-test = ldpc_jossy.py.test_ldpc:main",
             "ldpc-awgn = ldpc_jossy.py.ldpc_awgn:main",
-            "results2csv = ldpc_jossy.py.results2csv:main",
-            "ldpc-dispres = ldpc_jossy.py.disp_res:main",
+            "ldpc-results2csv = ldpc_jossy.py.results2csv:main",
+            "ldpc-dispres = ldpc_jossy.py.disp_res",
         ],
     },
 )

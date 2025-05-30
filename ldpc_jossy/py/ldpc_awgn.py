@@ -147,10 +147,14 @@ def sim(
         # heuristically.
 
 
-if __name__ == "__main__":
+def main():
     if len(sys.argv) > 1:  # args numbered 1 to 36 (better for grid engine calls
         argind = int(sys.argv[1]) - 1
     else:
         argind = 24
 
     sim(*sim_param[argind])
+
+
+if __name__ == "__main__":
+    main()

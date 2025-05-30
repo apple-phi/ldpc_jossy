@@ -74,3 +74,9 @@ def test_ldpc(standard, rate, z, ptype):
         
         
 
+def main():
+    """Run the LDPC test suite."""
+    import sys
+    import pytest
+
+    sys.exit(pytest.main(["-v", __file__]))
