@@ -3,7 +3,7 @@ from setuptools.command.build_ext import build_ext as _build_ext
 from setuptools.command.develop import develop as _develop
 import subprocess, os, shutil
 
-PACKAGE_NAME = "gf3"
+PACKAGE_NAME = "ldpc_jossy"
 ZIG_BUILD_DIR = "zig-out"
 
 # Declare a dummy extension so that build_ext always runs,
