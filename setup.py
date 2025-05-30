@@ -47,7 +47,7 @@ class ZigDevelop(_develop):
 
 setup(
     name=PACKAGE_NAME,
-    version="0.1.7",
+    version="0.1.8",
     packages=find_packages(),
     ext_modules=[dummy_ext],  # ← this makes build_ext run
     cmdclass={

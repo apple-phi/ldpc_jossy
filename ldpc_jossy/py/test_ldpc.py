@@ -58,14 +58,14 @@ def test_ldpc(standard, rate, z, ptype):
         x = mycode.encode(u)
         assert np.count_nonzero(np.mod(np.dot(x,np.transpose(H)),2)) == 0
         # modulate and amplify
-        y = np.array(10*(.5-x), dtype=float)
+        y = np.array(10*(.5-x), dtype=np.double)
         app,it = mycode.decode(y,'sumprod')
         assert it == 0
-        xh = np.array(app<0, dtype=int)
+        xh = np.array(app<0, dtype=np.int32)
         assert np.count_nonzero(xh != x) == 0
         app,it = mycode.decode(y,'sumprod2')
         assert it == 0
-        xh = np.array(app<0, dtype=int)
+        xh = np.array(app<0, dtype=np.int32)
         assert np.count_nonzero(xh != x) == 0
 #        (app,it) = mycode.decode(y,'minsum')
 #        assert it == 0

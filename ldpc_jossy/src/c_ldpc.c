@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdint.h>
 
 // #define __DEBUG__
 
@@ -29,11 +30,11 @@
  *                                                                      *
  ********************************************************************** */
 
-int sumprod(double *ch, long *vdeg, long *cdeg, long *intrlv,
-	    int Nv, int Nc, int Nmsg, double *app)
+int sumprod(double *ch, int32_t *vdeg, int32_t *cdeg, int32_t *intrlv,
+	    int32_t Nv, int32_t Nc, int32_t Nmsg, double *app)
 {
   double *msg;
-  int j, k, imsg, stopflag, itcount;
+  int32_t j, k, imsg, stopflag, itcount;
   double aggr;
   
   // allocating memory to contain graph messages
@@ -132,14 +133,14 @@ int sumprod(double *ch, long *vdeg, long *cdeg, long *intrlv,
 // the following 2 utility functions are used by sumprod2
 // they are "prototyped" here so the compiler knows they in and ouputs,
 // but the actual function definition will be given after sumprod2
-double Lxor(double L1, double L2, int correction_flag); // LLR of XOR
-double Lxfb(double *L, long dc, int correction_flag); // extrinsic LLR
+double Lxor(double L1, double L2, int32_t correction_flag); // LLR of XOR
+double Lxfb(double *L, int32_t dc, int32_t correction_flag); // extrinsic LLR
 
-int sumprod2(double *ch, long *vdeg, long *cdeg, long *intrlv,
-	     int Nv, int Nc, int Nmsg, double *app)
+int sumprod2(double *ch, int32_t *vdeg, int32_t *cdeg, int32_t *intrlv,
+	     int32_t Nv, int32_t Nc, int32_t Nmsg, double *app)
 {
   double *msg;
-  int j, k, imsg, stopflag, itcount;
+  int32_t j, k, imsg, stopflag, itcount;
   double aggr;
 
   /*
@@ -231,7 +232,7 @@ int sumprod2(double *ch, long *vdeg, long *cdeg, long *intrlv,
  *                                                                      *
  ********************************************************************** */
 
-double Lxor(double L1, double L2, int corr_flag)
+double Lxor(double L1, double L2, int32_t corr_flag)
 {
   double L;
 
@@ -291,11 +292,11 @@ double Lxor(double L1, double L2, int corr_flag)
 // this is just to avoid having to dynamically allocated the required memory
 // at every call, since the function is called very frequently
 
-double Lxfb(double *L, long dc, int corr_flag)
+double Lxfb(double *L, int32_t dc, int32_t corr_flag)
 {
   double f[MAXDC]; // forward values
   double b[MAXDC]; // backward values
-  int k;
+  int32_t k;
 
   // initilaize f[0] as L[0] and b[dc-1] as L[dc-1]
   for (k = 1, f[0] = L[0], b[dc-1] = L[dc-1] ; k < dc ; k++) {
@@ -336,11 +337,11 @@ double Lxfb(double *L, long dc, int corr_flag)
  *                                                                      *
  ********************************************************************** */
 
-int minsum(double *ch, long *vdeg, long *cdeg, long *intrlv,
-	   int Nv, int Nc, int Nmsg, double *app, double correction_factor)
+int minsum(double *ch, int32_t *vdeg, int32_t *cdeg, int32_t *intrlv,
+	   int32_t Nv, int32_t Nc, int32_t Nmsg, double *app, double correction_factor)
 {
   double *msg;
-  int j, k, imsg, stopflag, itcount;
+  int32_t j, k, imsg, stopflag, itcount;
   double aggr;
   
   msg = calloc(Nmsg, sizeof(double));
@@ -411,8 +412,8 @@ int main(int argc, char *argv[])
 {
   double ch[Nv]; // channel LLRs
   double app[Nv]; // decoder outputs
-  int k, counterrors;
-  int iterations;
+  int32_t k, counterrors;
+  int32_t iterations;
   double Pe;
 
   // take the crossover probability from the comman line or detault

@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
   fout = fopen(outfilename, "w");
 
   if (fin == NULL || fout == NULL) {
-    printf("Unable to open meaurement file %s\n", infilename);
+    printf("Unable to open measurement file %s\n", infilename);
     exit(-1);
   }
   else

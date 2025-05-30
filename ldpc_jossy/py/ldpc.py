@@ -294,7 +294,7 @@ class code:
         # that exceeds the matrix dimensions. 
         proto = self.proto
         z = self.z
-        pcmat = np.zeros((z*len(proto),z*len(proto[0])),dtype=int)
+        pcmat = np.zeros((z*len(proto),z*len(proto[0])),dtype=np.int32)
         (row,col) = np.nonzero(proto != -1)
         for j in range(len(row)):
             pcmat[row[j]*z:row[j]*z+z,col[j]*z:col[j]*z+z] = np.roll(np.eye(z),proto[row[j],col[j]]%z,1)
@@ -357,7 +357,7 @@ class code:
         # the variable node side, but the interleaver doubles up as a flag since
         # we initialised it as -1s, we know that any message that still has a -1
         # is an unuseed port for a variable node.
-        intrlv = -np.ones(np.sum(cdeg),dtype=int)
+        intrlv = -np.ones(np.sum(cdeg),dtype=np.int32)
         vflag = np.zeros(np.sum(cdeg),dtype=bool)
         # We will traverse the protograph stopping at each sub-graph that doesn't have
         # a -1 in the protograph (the -1s in the protograph correspond to an all-zero
@@ -394,8 +394,7 @@ class code:
                 vflag[yi] = 1
                 intrlv[xi] = yi
         intrlv = np.argsort(intrlv)
-        intrlv = intrlv.astype(np.int32)
-        return vdeg, cdeg, intrlv
+        return vdeg.astype(np.int32), cdeg.astype(np.int32), intrlv.astype(np.int32)
 
 
 
@@ -413,7 +412,7 @@ class code:
             raise NameError('information word length not compatible with proto and z')
     
         # x is the codeword, composed of K bits information and N-K bits parity
-        x = np.zeros(N, dtype=int)
+        x = np.zeros(N, dtype=np.int32)
         x[0:K] = info # pre-fill the first K bits with the information
 
         # for the encoding, we will address x z bits at a time, so we reshape it to
@@ -421,7 +420,7 @@ class code:
         x = np.reshape(x,(Np,z))
         # the following p will contain sum_k x_k H_jk for each row of the prototype parity
         # check matrix, where the sum is only over the systematic (information) part
-        p = np.zeros((Mp,z), dtype=int)
+        p = np.zeros((Mp,z), dtype=np.int32)
         for j in range(Mp):
             ind = np.nonzero(proto[j,0:Kp] != -1)[0]
             for k in ind.tolist():
@@ -463,10 +462,10 @@ class code:
 
                             
     def decode(self, ch, dectype='sumprod2', corr_factor=0.7):
-        vdeg = self.vdeg
-        cdeg = self.cdeg
-        intrlv = self.intrlv
-        
+        vdeg = self.vdeg.astype(np.int32)
+        cdeg = self.cdeg.astype(np.int32)
+        intrlv = self.intrlv.astype(np.int32)
+
         # preliminary consistency checks
         if len(ch) != len(vdeg):
             raise NameError('Channel inputs not consistent with variable degrees')
@@ -477,9 +476,9 @@ class code:
         app = np.zeros(Nv, dtype=np.double)
         app_p = app.ctypes.data_as(ct.POINTER(ct.c_double))
         ch_p = ch.ctypes.data_as(ct.POINTER(ct.c_double))
-        vdeg_p = self.vdeg.ctypes.data_as(ct.POINTER(ct.c_long))
-        cdeg_p = self.cdeg.ctypes.data_as(ct.POINTER(ct.c_long))
-        intrlv_p = self.intrlv.ctypes.data_as(ct.POINTER(ct.c_long))
+        vdeg_p = self.vdeg.ctypes.data_as(ct.POINTER(ct.c_int32))
+        cdeg_p = self.cdeg.ctypes.data_as(ct.POINTER(ct.c_int32))
+        intrlv_p = self.intrlv.ctypes.data_as(ct.POINTER(ct.c_int32))
         # call C function for the sum product algorithm
         if dectype == 'sumprod':
             it = c_ldpc.sumprod(ch_p, vdeg_p, cdeg_p, intrlv_p, Nv, Nc, Nmsg, app_p)
@@ -497,7 +496,7 @@ class code:
 
     def Lxfb(self, L, corrflag=1):
         dc = len(L)
-        L = np.array(L, dtype=float)
+        L = np.array(L, dtype=np.double)
         L_p = L.ctypes.data_as(ct.POINTER(ct.c_double))
         c_ldpc.Lxfb.restype = ct.c_double
         return c_ldpc.Lxfb(L_p, dc, corrflag), L
