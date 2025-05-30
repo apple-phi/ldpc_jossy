@@ -1,3 +1,4 @@
+import sys
 from setuptools import setup, Extension, find_packages
 from setuptools.command.build_ext import build_ext as _build_ext
 from setuptools.command.develop import develop as _develop
@@ -13,13 +14,8 @@ dummy_ext = Extension(f"{PACKAGE_NAME}._dummy", sources=[])
 
 class ZigBuildExt(_build_ext):
     def run(self):
-        # 1) run your Zig build
-        zig = shutil.which("zig")
-        if zig is None:
-            raise EnvironmentError(
-                "Zig compiler not found. Please install Zig and ensure it is in your PATH."
-            )
-        subprocess.run([zig, "build"], check=True)
+        # 1) platform-agnostic compile step
+        subprocess.run([sys.executable, "-m", "ziglang", "build"], check=True)
         # 2) copy the resulting shared libs into build_lib/ldpc_jossy/
         if not os.path.exists(ZIG_BUILD_DIR):
             raise FileNotFoundError(f"{ZIG_BUILD_DIR} not found")
@@ -53,7 +49,7 @@ class ZigDevelop(_develop):
 setup(
     name=PACKAGE_NAME,
     version="0.1.8",
-    packages=find_packages(),
+    packages=[*find_packages(), "ldpc_jossy.data"],
     ext_modules=[dummy_ext],  # ← this makes build_ext run
     cmdclass={
         "build_ext": ZigBuildExt,
