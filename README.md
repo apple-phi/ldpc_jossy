@@ -42,10 +42,10 @@ As long as your Python is on PATH (i.e., most correct installations and all acti
 a number of scripts will be installed to your terminal.
 
 ```sh
-C:\Users\lucas> ldpc-test 
-C:\Users\lucas> results2csv
-C:\Users\lucas> ldpc-dispres
-C:\Users\lucas> ldpc-awgn
+C:\Users\me> ldpc-test 
+C:\Users\me> ldpc-results2csv
+C:\Users\me> ldpc-dispres
+C:\Users\me> ldpc-awgn
 ```
 
 These are documented below in Jossy's original LDPC docs.
@@ -54,15 +54,21 @@ Note that the latter is very computationally expensive (and can take months on a
 Alternatively, you can run them from Python.
 
 ```py
-from ldpc_jossy.py import ldpc_test
-ldpc_test.main()
+from ldpc_jossy.py import test_ldpc
+test_ldpc.main()
+```
 
+```py
 from ldpc_jossy.py import results2csv
 results2csv.main()
+```
 
-from ldpc_jossy.py import ldpc_dispres
-# No main() needed
+```py
+from ldpc_jossy.py import disp_res
+# No .main() needed
+```
 
+```py
 from ldpc_jossy.py import ldpc_awgn
 ldpc_awgn.main()
 ```

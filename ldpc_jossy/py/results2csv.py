@@ -17,6 +17,7 @@ def main():
         sys.exit(f"Could not find results2csv executable at {exe!r}")
     # Forward all args
     # But if no argv[1] then set it to ROOT_DIR / "data" / "results.csv"
-    if len(sys.argv) < 2:
-        sys.argv.append(str(ROOT_DIR / "data" / "results"))  # prefix without .csv
-    return subprocess.call([exe, *sys.argv[1:]])
+    argv = sys.argv.copy()
+    if len(argv) < 2:
+        argv.append(str(ROOT_DIR / "data" / "results"))  # prefix without .csv
+    return subprocess.call([exe, *argv[1:]])
