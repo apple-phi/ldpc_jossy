@@ -6,26 +6,28 @@ import pathlib
 
 ROOT_DIR = pathlib.Path(__file__).parent.parent
 search_dirs = ["bin", "lib"]
-try_exts = ["", ".so", ".dll", ".dylib", ".bundle"]
+try_prefixes = ["lib", ""]
+try_exts = ["", ".so", ".dll", ".dylib", ".bundle", ".lib"]
 
 c_ldpc = None
 
 for subdir in search_dirs:
-    # Build the candidate base path (without extension)
-    base_path = ROOT_DIR / subdir / "c_ldpc"
+    for prefix in try_prefixes:
+        # Build the candidate base path (without extension)
+        base_path = ROOT_DIR / subdir / (prefix + "c_ldpc")
 
-    for ext in try_exts:
-        candidate = base_path.with_suffix(ext)
-        if candidate.exists():
-            try:
-                c_ldpc = ctypes.CDLL(str(candidate))
-                print(f"Loaded {candidate} successfully.")
-            except Exception as e:
-                print(f"Attempted to load {candidate}: {e}")
-            break  # stop trying extensions for this subdir
+        for ext in try_exts:
+            candidate = base_path.with_suffix(ext)
+            if candidate.exists():
+                try:
+                    c_ldpc = ctypes.CDLL(str(candidate))
+                    print(f"Loaded {candidate} successfully.")
+                except Exception as e:
+                    print(f"Attempted to load {candidate}: {e}")
+                break  # stop trying extensions for this subdir
 
-    if c_ldpc is not None:
-        break  # library was loaded (or at least found); stop searching other subdirs
+        if c_ldpc is not None:
+            break  # library was loaded (or at least found); stop searching other subdirs
 
 if c_ldpc is None:
     raise RuntimeError(
