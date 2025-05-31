@@ -1,4 +1,86 @@
-# ldpc
+# Platform-agnostic `ldpc_jossy`
+
+Jossy's LDPC package has historically been tricky to install
+and use cross-platform due to differences in compiler availability, bugs in type-conversions,
+and its usage platform-dependent C-types
+(e.g. the size of a `long` depends on the machine but the Python code previously muddled `int`, `int32` and `int64`).
+
+What if you had universal, platform-agnostic, single command installation?
+
+## Installation
+
+```py
+pip install git+https://github.com/apple-phi/ldpc_jossy
+```
+
+That's it. No compiling, no MSYS2, no manual code-editing. It's all handled for you.
+
+## How does it work?
+
+This package standardises several platform-independent parts of the library.
+
+- C's `long` previously could be `int32_t` or `int64_t`. Now, the C-code is standardised to use `int32_t`.
+- It enforces dynamic type-checking via ctypes's `restype` and `argtypes`
+- It dynamically locates the shared library / CLL.
+- It handles compilation for you during install, on any platform.
+
+## Demo
+
+```py
+import ldpc_jossy.py.ldpc as ldpc
+import numpy as np
+c = ldpc.code()
+x = c.encode(np.random.randint(0, 2, c.K))
+y = 10 * (.5 - x)
+app, it = c.decode(y)
+print(it)  # -> 0
+```
+
+## Scripts
+
+As long as your Python is on PATH (i.e., most correct installations and all activated virtual environments),
+a number of scripts will be installed to your terminal.
+
+```sh
+C:\Users\lucas> ldpc-test 
+C:\Users\lucas> results2csv
+C:\Users\lucas> ldpc-dispres
+C:\Users\lucas> ldpc-awgn
+```
+
+These are documented below in Jossy's original LDPC docs.
+Note that the latter is very computationally expensive (and can take months on a single machine!).
+
+Alternatively, you can run them from Python.
+
+```py
+from ldpc_jossy.py import ldpc_test
+ldpc_test.main()
+
+from ldpc_jossy.py import results2csv
+results2csv.main()
+
+from ldpc_jossy.py import ldpc_dispres
+# No main() needed
+
+from ldpc_jossy.py import ldpc_awgn
+ldpc_awgn.main()
+```
+
+## Tips
+
+If you want to locate your installation, run:
+
+```py
+import ldpc_jossy
+print(ldpc_jossy.__file__)
+```
+
+<br/>
+<br/>
+<br/>
+
+# Jossy's ldpc docs
 This package contains an implementation of encoders and 
 decoders for the low-density parity-check (LDPC) codes
 defined in the IEEE 802.11n and 802.16 families of standards.

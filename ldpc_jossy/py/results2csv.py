@@ -18,5 +18,5 @@ def main():
     # Forward all args
     # But if no argv[1] then set it to ROOT_DIR / "data" / "results.csv"
     if len(sys.argv) < 2:
-        sys.argv.append(str(ROOT_DIR / "data" / "results.csv"))
+        sys.argv.append(str(ROOT_DIR / "data" / "results"))  # prefix without .csv
     return subprocess.call([exe, *sys.argv[1:]])
