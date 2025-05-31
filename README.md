@@ -10,7 +10,7 @@ What if you had universal, platform-agnostic, single command installation?
 ## Installation
 
 ```py
-pip install git+https://github.com/apple-phi/ldpc_jossy
+pip install git+https://github.com/apple-phi/ldpc_jossy -vvv
 ```
 
 That's it. No compiling / `gcc`, no MSYS2, no manual code-editing. It's all handled for you.
