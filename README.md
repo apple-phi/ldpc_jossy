@@ -2,7 +2,7 @@
 
 Jossy's LDPC package has historically been tricky to install
 and use cross-platform due to differences in compiler availability, bugs in type-conversions,
-and its usage platform-dependent C-types
+and its usage of platform-dependent C-types
 (e.g. the size of a `long` depends on the machine but the Python code previously muddled `int`, `int32` and `int64`).
 
 What if you had universal, platform-agnostic, single command installation?
@@ -13,15 +13,15 @@ What if you had universal, platform-agnostic, single command installation?
 pip install git+https://github.com/apple-phi/ldpc_jossy
 ```
 
-That's it. No compiling, no MSYS2, no manual code-editing. It's all handled for you.
+That's it. No compiling / `gcc`, no MSYS2, no manual code-editing. It's all handled for you.
 
 ## How does it work?
 
 This package standardises several platform-independent parts of the library.
 
-- C's `long` previously could be `int32_t` or `int64_t`. Now, the C-code is standardised to use `int32_t`.
+- C's `long` previously could be treated as `int32_t` or `int64_t`. Now, the C-code is standardised to use `int32_t`.
 - It enforces dynamic type-checking via ctypes's `restype` and `argtypes`
-- It dynamically locates the shared library / CLL.
+- It dynamically locates the shared library / DLL.
 - It handles compilation for you during install, on any platform.
 
 ## Demo
@@ -42,7 +42,7 @@ As long as your Python is on PATH (i.e., most correct installations and all acti
 a number of scripts will be installed to your terminal.
 
 ```sh
-C:\Users\me> ldpc-test 
+C:\Users\me> ldpc-test # (test your install)
 C:\Users\me> ldpc-results2csv
 C:\Users\me> ldpc-dispres
 C:\Users\me> ldpc-awgn
@@ -86,7 +86,7 @@ print(ldpc_jossy.__file__)
 <br/>
 <br/>
 
-# Jossy's ldpc docs
+# Jossy's original ldpc docs
 This package contains an implementation of encoders and 
 decoders for the low-density parity-check (LDPC) codes
 defined in the IEEE 802.11n and 802.16 families of standards.
