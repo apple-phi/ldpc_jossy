@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys
 from setuptools import setup, Extension, find_packages
 from setuptools.command.build_ext import build_ext as _build_ext
@@ -34,10 +35,10 @@ class ZigBuildExt(_build_ext):
             dst = os.path.join(target_pkg_dir, item)
 
             if os.path.isdir(src):
-                print(f"[ZigBuildExt] Copying directory: {src} → {dst}")
+                print(f"[ZigBuildExt] Copying directory: {src} to {dst}")
                 shutil.copytree(src, dst, dirs_exist_ok=True)
             else:
-                print(f"[ZigBuildExt] Copying file:      {src} → {dst}")
+                print(f"[ZigBuildExt] Copying file:      {src} to {dst}")
                 shutil.copy2(src, dst)
 
         # 3) now run the super method, which will pick up our dummy_ext
@@ -62,7 +63,7 @@ setup(
     name=PACKAGE_NAME,
     version="0.1.8",
     packages=[*find_packages(), "ldpc_jossy.data"],
-    ext_modules=[dummy_ext],  # ← this makes build_ext run
+    ext_modules=[dummy_ext],  # this makes build_ext run
     cmdclass={
         "build_ext": ZigBuildExt,
         "develop": ZigDevelop,
