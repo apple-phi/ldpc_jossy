@@ -15,17 +15,29 @@ dummy_ext = Extension(f"{PACKAGE_NAME}._dummy", sources=[])
 class ZigBuildExt(_build_ext):
     def run(self):
         # 1) platform-agnostic compile step
+        print(f"[ZigBuildExt] Running Zig build command...")
         subprocess.run([sys.executable, "-m", "ziglang", "build"], check=True)
+
         # 2) copy the resulting shared libs into build_lib/ldpc_jossy/
         if not os.path.exists(ZIG_BUILD_DIR):
             raise FileNotFoundError(f"{ZIG_BUILD_DIR} not found")
+
         target_pkg_dir = os.path.join(self.build_lib, PACKAGE_NAME)
+        print(
+            f"[ZigBuildExt] Ensuring target package directory exists: {target_pkg_dir}"
+        )
+        os.makedirs(target_pkg_dir, exist_ok=True)
+
+        print(f"[ZigBuildExt] Listing contents of ZIG_BUILD_DIR: {ZIG_BUILD_DIR}")
         for item in os.listdir(ZIG_BUILD_DIR):
             src = os.path.join(ZIG_BUILD_DIR, item)
             dst = os.path.join(target_pkg_dir, item)
+
             if os.path.isdir(src):
+                print(f"[ZigBuildExt] Copying directory: {src} → {dst}")
                 shutil.copytree(src, dst, dirs_exist_ok=True)
             else:
+                print(f"[ZigBuildExt] Copying file:      {src} → {dst}")
                 shutil.copy2(src, dst)
 
         # 3) now run the super method, which will pick up our dummy_ext
