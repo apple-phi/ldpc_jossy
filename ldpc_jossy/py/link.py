@@ -5,16 +5,32 @@ import os
 import pathlib
 
 ROOT_DIR = pathlib.Path(__file__).parent.parent
+search_dirs = ["bin", "lib"]
+try_exts = ["", ".so", ".dll", ".dylib", ".bundle"]
 
-p = ROOT_DIR / "bin" / "c_ldpc"
+c_ldpc = None
 
-try_exts = ["", ".so", ".dll", ".dylib"]
-for ext in try_exts:
-    if os.path.exists(p.with_suffix(ext)):
-        p = p.with_suffix(ext)
-        break
+for subdir in search_dirs:
+    # Build the candidate base path (without extension)
+    base_path = ROOT_DIR / subdir / "c_ldpc"
 
-c_ldpc = ctypes.CDLL(str(p))
+    for ext in try_exts:
+        candidate = base_path.with_suffix(ext)
+        if candidate.exists():
+            try:
+                c_ldpc = ctypes.CDLL(str(candidate))
+                print(f"Loaded {candidate} successfully.")
+            except Exception as e:
+                print(f"Attempted to load {candidate}: {e}")
+            break  # stop trying extensions for this subdir
+
+    if c_ldpc is not None:
+        break  # library was loaded (or at least found); stop searching other subdirs
+
+if c_ldpc is None:
+    raise RuntimeError(
+        f"Could not find or load the 'c_ldpc' dynamic library in either {ROOT_DIR / 'bin'} or {ROOT_DIR / 'lib'} directories with extensions {try_exts}."
+    )
 
 # shorthand
 c_double_p = ctypes.POINTER(ctypes.c_double)
