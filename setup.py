@@ -66,4 +66,5 @@ setup(
             "ldpc-dispres = ldpc_jossy.py.disp_res:noop",
         ],
     },
+    install_requires=["numpy", "matplotlib", "pytest"],
 )
