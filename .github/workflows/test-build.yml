@@ -20,11 +20,11 @@ jobs:
         exclude:
           # Only include ziglang=true for 3.12 and 3.13
           - python-version: '3.9'
-            use-pip-ziglang: true
+            use-pip-ziglang: false
           - python-version: '3.10'
-            use-pip-ziglang: true
+            use-pip-ziglang: false
           - python-version: '3.11'
-            use-pip-ziglang: true
+            use-pip-ziglang: false
 
     steps:
     - name: Checkout code
@@ -36,7 +36,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     
     - name: Install Zig (pre-installed)
-      if: matrix.use-pip-ziglang == 'false'
+      if: matrix.use-pip-ziglang == false
       uses: mlugg/setup-zig@v2
       with:
         version: 0.14.1
