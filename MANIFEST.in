@@ -1,0 +1,11 @@
+# Include all source files needed for building
+include build.zig
+recursive-include ldpc_jossy/src *.c *.h
+include README.md
+include pyproject.toml
+
+global-exclude *.pyc
+global-exclude __pycache__
+global-exclude *.so
+global-exclude *.dll
+global-exclude *.dylib
