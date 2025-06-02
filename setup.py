@@ -19,14 +19,26 @@ class ZigBuildExt(_build_ext):
         if exe := shutil.which("zig"):
             print("[ZigBuildExt] Building via Zig CLI found at:", exe)
             try:
-                subprocess.run([exe, "build"], check=True, stdout=sys.stdout, stderr=sys.stderr)
+                subprocess.run(
+                    [exe, "build"], check=True, stdout=sys.stdout, stderr=sys.stderr
+                )
             except subprocess.CalledProcessError:
                 print("[ZigBuildExt] Zig CLI build failed.")
                 print("[ZigBuildExt] Falling back to PyPI ziglang package.")
-                subprocess.run([sys.executable, "-m", "ziglang", "build"], check=True, stdout=sys.stdout, stderr=sys.stderr)
+                subprocess.run(
+                    [sys.executable, "-m", "ziglang", "build"],
+                    check=True,
+                    stdout=sys.stdout,
+                    stderr=sys.stderr,
+                )
         else:
             print("[ZigBuildExt] Building via PyPI ziglang.")
-            subprocess.run([sys.executable, "-m", "ziglang", "build"], check=True, stdout=sys.stdout, stderr=sys.stderr)
+            subprocess.run(
+                [sys.executable, "-m", "ziglang", "build"],
+                check=True,
+                stdout=sys.stdout,
+                stderr=sys.stderr,
+            )
 
         # 2) copy the resulting shared libs into build_lib/ldpc_jossy/
         if not os.path.exists(ZIG_BUILD_DIR):
