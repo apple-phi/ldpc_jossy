@@ -18,8 +18,8 @@ class ZigBuildExt(_build_ext):
         # 1) platform-agnostic compile step
 
         # a. If you have Zig installed already, you can use it directly.
-        if exe := shutil.which("zig") is not None:
-            print("[ZigBuildExt] Building via Zig CLI.")
+        if exe := shutil.which("zig"):
+            print("[ZigBuildExt] Building via Zig CLI found at:", exe)
             try:
                 subprocess.run([exe, "build"], check=True)
             except subprocess.CalledProcessError:
