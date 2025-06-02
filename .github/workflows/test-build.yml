@@ -131,7 +131,7 @@ jobs:
     
     - name: Install from source distribution
       run: |
-        python -m pip install dist/*.tar.gz
+        python -m pip install --no-build-isolation dist/*.tar.gz
       
     - name: Delete local folder ldpc_jossy
       run: |
