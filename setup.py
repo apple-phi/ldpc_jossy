@@ -15,20 +15,18 @@ dummy_ext = Extension(f"{PACKAGE_NAME}._dummy", sources=[])
 
 class ZigBuildExt(_build_ext):
     def run(self):
-        # 1) platform-agnostic compile step
-
-        # a. If you have Zig installed already, you can use it directly.
+        # 1) platform-agnostic compile step        # a. If you have Zig installed already, you can use it directly.
         if exe := shutil.which("zig"):
             print("[ZigBuildExt] Building via Zig CLI found at:", exe)
             try:
-                subprocess.run([exe, "build"], check=True)
+                subprocess.run([exe, "build"], check=True, stdout=sys.stdout, stderr=sys.stderr)
             except subprocess.CalledProcessError:
                 print("[ZigBuildExt] Zig CLI build failed.")
                 print("[ZigBuildExt] Falling back to PyPI ziglang package.")
-                subprocess.run([sys.executable, "-m", "ziglang", "build"], check=True)
+                subprocess.run([sys.executable, "-m", "ziglang", "build"], check=True, stdout=sys.stdout, stderr=sys.stderr)
         else:
             print("[ZigBuildExt] Building via PyPI ziglang.")
-            subprocess.run([sys.executable, "-m", "ziglang", "build"], check=True)
+            subprocess.run([sys.executable, "-m", "ziglang", "build"], check=True, stdout=sys.stdout, stderr=sys.stderr)
 
         # 2) copy the resulting shared libs into build_lib/ldpc_jossy/
         if not os.path.exists(ZIG_BUILD_DIR):
