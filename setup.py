@@ -16,7 +16,7 @@ dummy_ext = Extension(f"{PACKAGE_NAME}._dummy", sources=[])
 class ZigBuildExt(_build_ext):
     def run(self):
         # 1) platform-agnostic compile step
-        print(f"[ZigBuildExt] Running Zig build command...")
+        print("[ZigBuildExt] Running Zig build command...")
         subprocess.run([sys.executable, "-m", "ziglang", "build"], check=True)
 
         # 2) copy the resulting shared libs into build_lib/ldpc_jossy/
